@@ -7,7 +7,13 @@
     <body>
         <h2>Student Management System</h2>
         <script>
-            
+            hello();
+
+            async function hello(){
+                const response = await fetch('/api');
+                const data = await response.json();
+                console.log(data);
+            }
         </script>
     </body>
 </html>

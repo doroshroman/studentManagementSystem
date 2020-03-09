@@ -5,12 +5,16 @@
         <title>Student Management System</title>
     </head>
     <body>
-        <h2>Student Management System</h2>
+        <h2>All Students</h2>
+        <a href="sign-in.html">Sign In</a> | 
+        <a href="registration.html">Registration</a>
         <script>
+            
+
             hello();
 
             async function hello(){
-                const response = await fetch('/api');
+                const response = await fetch('/all');
                 const data = await response.json();
                 console.log(data);
             }

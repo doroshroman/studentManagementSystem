@@ -5,11 +5,13 @@
         <title>Sign In</title>
     </head>
     <body>
-        <h3>Sign In </h3>
-        <form id="sign-in">
+        <h3>Sign In</h3>
+        <form action="auth.js" id="sign-in" method="post">
+            <p id="sign-error"></p>
             <p><input type="email" name="email" placeholder="Email"></p>
             <p><input type="password" name="password" placeholder="Password"></p>
             <p><input type="submit" value="Enter"></p>
         </form>
+        <script src="auth.js"></script>
     </body>
 </html>

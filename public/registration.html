@@ -6,8 +6,8 @@
     </head>
     <body>
         <h3>Register</h3>
-        <form id="register">
-            <p id="error"></p>
+        <form action="auth.js" id="register" method="post">
+            <p id="reg-error"></p>
             <p><input type="text" name="name" placeholder="Name">
             <input type="text" name="surname" placeholder="Surname">
             </p>
@@ -16,6 +16,6 @@
             <p><input type="password" name="password" placeholder="Password"></p>
             <p><input type="submit" value="Register"></p>
         </form>
-        <script src="client.js"></script>
+        <script src="auth.js"></script>
     </body>
 </html>

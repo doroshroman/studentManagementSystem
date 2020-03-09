@@ -20,7 +20,7 @@ app.get('/all', (req, res) => {
     res.json({'test': 10});
 });
 
-app.post('/users', (req, res) =>{
+app.post('/reg', (req, res) =>{
     // validate and insert to db
     if(isValidUser(req.body)){
         const name = req.body.name.toString().trim();
@@ -56,13 +56,40 @@ app.post('/users', (req, res) =>{
         });
     }
 });
+app.post('/sign', (req, res) =>{
+    const email = req.body.email;
+    const password = req.body.password;
+    if(isValidAuthUser(email, password)){
+
+        db.findOne({ email: email}, (err, doc) =>{
+            if(err){
+                res.end();
+            }
+            if(doc !== null){
+               res.json({
+                   message: "Successfully authenticated!"
+               })
+            }
+        });
+
+    }else{
+        res.status(422);
+        res.json({
+            message: 'All fields are required!'
+        });
+    }
+});
+
+function isValidAuthUser(email, password){
+    return email && email.toString().trim() !== '' &&
+    password && password.toString().trim() !== ''
+}
 
 function isValidUser(user){
     return user.name && user.name.toString().trim() !== '' && 
     user.surname && user.surname.toString().trim() !== '' && 
     user.patronymic && user.patronymic.toString().trim() !== '' &&
-    user.email && user.email.toString().trim() !== '' &&
-    user.password && user.password.toString().trim() !== ''
+    isValidAuthUser(user.email, user.password);
 }
 
 

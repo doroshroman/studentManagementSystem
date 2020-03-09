@@ -1,1 +1,2 @@
-{"name":{"first":"Name","last":"Surname","patronymic":"Patr"},"email":"milo@gmail.com","password":"password","permissions":{},"_id":"y5R8YzRS77SWuozf"}
+{"name":{"first":"Roman","last":"Dorosh","patronymic":"Volodymirovich"},"email":"admin1@gmail.com","password":"password","permissions":[{"title":"admin","description":"All priviligies"}],"_id":"N1aoUieM2rRwgxnG"}
+{"name":{"first":"Roman","last":"Dorosh","patronymic":"Volodimirovich"},"email":"admin@gmail.com","password":"password","permissions":[{"title":"student","description":"None"}],"_id":"qvMoy4phiItl2jxV"}

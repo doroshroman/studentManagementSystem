@@ -1,3 +1,4 @@
+
 const signForm = document.getElementById('sign-in');
 const signError = document.getElementById('sign-error');
 const AUTH_API_URL = 'http://localhost:3000/sign';
@@ -23,6 +24,7 @@ function postData(API_URL, data, errorElement, form){
             errorElement.textContent = '';
         }
     }).then(() =>{
+        
         form.reset();
         
     }).catch(errorMessage => {

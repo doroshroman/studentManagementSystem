@@ -21,6 +21,13 @@ function postData(API_URL, data, errorElement, form){
                 return response.text().then(message => Promise.reject(message));
             }
         }else{
+            response.json().then((data) =>{
+                sessionStorage.setItem('session_id', data.session_id);
+
+            }).catch(errorMessage=>{
+                console.log(errorMessage);
+            });
+
             errorElement.textContent = '';
         }
     }).then(() =>{

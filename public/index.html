@@ -7,17 +7,18 @@
     <body>
         <h2>All Students</h2>
         <a href="sign-in.html">Sign In</a> | 
-        <a href="registration.html">Registration</a>
+        <a href="registration.html">Registration</a> | 
+        <a id="add" href="">Add Student Page</a>
+
         <script>
-            
-
-            hello();
-
-            async function hello(){
-                const response = await fetch('/all');
-                const data = await response.json();
-                console.log(data);
-            }
+            const addStudent = document.getElementById('add');
+            addStudent.addEventListener('click' , async (event)=>{
+                //event.preventDefault();
+                
+                sessionId = sessionStorage.getItem('session_id');
+                addStudent.href = '/add-student?sessionId='+sessionId;
+                
+            });
         </script>
     </body>
 </html>

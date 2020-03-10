@@ -10,7 +10,7 @@ const Datastore = require('nedb'),
 
 const manager = new userManager(); 
 
-let currentUser = null;
+let currentSessions = {};
 
 app.listen(3000, () => {
     console.log('App listening on port 3000!');
@@ -41,7 +41,7 @@ app.post('/reg', (req, res) =>{
             if(doc === null){
                 // insert into db
                 db.insert(user, (err, newDoc) =>{
-                    currentUser = newDoc;
+
                     res.json(newDoc);
                 });
             }else{
@@ -70,10 +70,16 @@ app.post('/sign', (req, res) =>{
                 res.end();
             }
             if(doc !== null && doc.password.toLowerCase() === password){
-               currentUser = doc;
+               const hash = randomHash(16);
+               currentSessions[hash] = doc;
                res.json({
-                   message: "Successfully authenticated!"
+                   session_id: hash
                });
+            }else{
+                res.status(422);
+                res.json({
+                    message: "Incorrect password or you are not registered."
+                });
             }
         });
 
@@ -86,21 +92,33 @@ app.post('/sign', (req, res) =>{
 });
 // Only admin can add user
 app.get('/add-student', (req, res) =>{
-    if(currentUser !== null && Object.keys(currentUser.permissions).length !== 0){
-        const adminInd = currentUser.permissions.findIndex((perm, index) =>{
-            if(perm.title.toLowerCase() === 'admin'){
-                return true;
+    const session = req.query.sessionId;
+    const user = currentSessions[session];
+    let permission = false;
+    console.log("Session:", session);
+    console.log(user);
+    if(user !== undefined && user !== null){
+        if(Object.keys(user.permissions).length !== 0){
+            const adminInd = user.permissions.findIndex((perm, index) =>{
+                if(perm.title.toLowerCase() === 'admin'){
+                    return true;
+                }
+            });
+            if(adminInd !== -1){
+                res.sendFile(path.join(__dirname + '/html/add-student.html'));
+                permission = true;
             }
-        });
-        if(adminInd !== -1){
-            res.sendFile(path.join(__dirname + '/static/html/add-student.html'));
+            
         }
-        
     }else{
-        res.send("You need to register or sign in");
+        permission = false;
+    }
+    if(!permission){
+        res.send("You don\'t have enought rights.");
     }
 });
 
+// Validation part
 function isValidAuthUser(email, password){
     return email && email.toString().trim() !== '' &&
     password && password.toString().trim() !== ''
@@ -111,6 +129,22 @@ function isValidUser(user){
     user.surname && user.surname.toString().trim() !== '' && 
     user.patronymic && user.patronymic.toString().trim() !== '' &&
     isValidAuthUser(user.email, user.password);
+} 
+
+// random hash
+function randomHash(hashlen){
+    const characters = "0123456789ABCDEFGHIJKLMNPQRSTUVWXYZ";
+    let hash = "";
+    const charslen = characters.length;
+    for(let i = 0;i < hashlen;i++){
+        let choice = Math.random();
+        let char = characters[Math.floor(Math.random() * charslen)];
+        if(choice < 0.5){
+            char = char.toLowerCase();
+        }
+        hash += char;
+    }
+    return hash;
 }
 
 

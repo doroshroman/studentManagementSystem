@@ -6,7 +6,7 @@
     </head>
     <body>
         <h2>Add Student</h2>
-        <form action="" id="register" method="post">
+        <form action="add-student.js" id="student" method="post">
             <p id="stud-error"></p>
             <p><input type="text" name="name" placeholder="Name">
             <input type="text" name="surname" placeholder="Surname">
@@ -15,8 +15,18 @@
             <p><input type="email" name="email" placeholder="Email"></p>
             <p><input type="password" name="password" placeholder="Password"></p>
             <p><input type="date" name="date" placeholder="Your birthday"></p>
+            <p> <input type="radio" id="genderMen"
+                name="gender" value="men">
+               <label for="genderMen">Men</label>
+               <input type="radio" id="genderWomen"
+                name="gender" value="women">
+               <label for="genderWomen">Women</label>
+            </p>
+            <p><input type="text" name="group" placeholder="Group"></p>
+            <p><input type="text" name="stud-code" placeholder="Student Code"></p>
+            <p><input type="text" name="pass-code" placeholder="Passport Code"></p>
             <p><input type="submit" value="Register"></p>
         </form>
-        <script src="reg.js"></script>
+        <script src="add-student.js"></script>
     </body>
 </html>

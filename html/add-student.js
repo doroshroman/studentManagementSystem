@@ -1,8 +1,6 @@
-
-const regForm = document.getElementById('register');
-const regError = document.getElementById('reg-error');
-const REG_API_URL = 'http://localhost:3000/reg';
-
+const studentForm = document.getElementById('student');
+const error = document.getElementById('stud-error');
+const STUDENT_API_URL = 'http://localhost:3000/add-student'
 
 function postData(API_URL, data, errorElement, form){
     const options = {
@@ -21,12 +19,6 @@ function postData(API_URL, data, errorElement, form){
                 return response.text().then(message => Promise.reject(message));
             }
         }else{
-            response.json().then((data) =>{
-                sessionStorage.setItem('session_id', data.session_id);
-
-            }).catch(errorMessage=>{
-                console.log(errorMessage);
-            });
             errorElement.textContent = '';
         }
     }).then(() =>{
@@ -38,7 +30,7 @@ function postData(API_URL, data, errorElement, form){
     });
 }
 
-regForm.addEventListener('submit', (event) => {
+studentForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const formData = new FormData(regForm);
     const name = formData.get('name');
@@ -46,8 +38,9 @@ regForm.addEventListener('submit', (event) => {
     const patronymic = formData.get('patronymic');
     const email = formData.get('email');
     const password = formData.get('password');
+    const birthday = formData.get('birthday');
 
-    const user = {
+   const user = {
         name,
         surname,
         patronymic,
@@ -55,8 +48,6 @@ regForm.addEventListener('submit', (event) => {
         password
     };
 
-    postData(REG_API_URL, user, regError, regForm);
+    //postData(REG_API_URL, user, regError, regForm);
 
 });
-
-

@@ -41,8 +41,10 @@ app.post('/reg', (req, res) =>{
             if(doc === null){
                 // insert into db
                 db.insert(user, (err, newDoc) =>{
-
-                    res.json(newDoc);
+                    hash = bindUserAndGetHash(newDoc);
+                    res.json({
+                        session_id: hash
+                    });
                 });
             }else{
                 res.status(422);
@@ -70,8 +72,7 @@ app.post('/sign', (req, res) =>{
                 res.end();
             }
             if(doc !== null && doc.password.toLowerCase() === password){
-               const hash = randomHash(16);
-               currentSessions[hash] = doc;
+                hash = bindUserAndGetHash(doc);
                res.json({
                    session_id: hash
                });
@@ -130,6 +131,14 @@ function isValidUser(user){
     user.patronymic && user.patronymic.toString().trim() !== '' &&
     isValidAuthUser(user.email, user.password);
 } 
+
+function bindUserAndGetHash(user){
+    const hashlen = 16;
+    const hash = randomHash(hashlen);
+    currentSessions[hash] = user;
+
+    return hash;
+}
 
 // random hash
 function randomHash(hashlen){

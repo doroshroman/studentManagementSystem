@@ -1,2 +1,4 @@
+{"name":{"first":"Test","last":"Test","patronymic":"Test"},"email":"test@milo.ru","password":"password","permissions":[],"_id":"AUFnWxG4aLc1IgRD"}
 {"name":{"first":"Roman","last":"Dorosh","patronymic":"Volodymirovich"},"email":"admin1@gmail.com","password":"password","permissions":[{"title":"admin","description":"All priviligies"}],"_id":"N1aoUieM2rRwgxnG"}
 {"name":{"first":"Roman","last":"Dorosh","patronymic":"Volodimirovich"},"email":"admin@gmail.com","password":"password","permissions":[{"title":"student","description":"None"}],"_id":"qvMoy4phiItl2jxV"}
+{"name":{"first":"Misha","last":"Dorosh","patronymic":"Patr"},"email":"misha@gmail.com","password":"word","permissions":[],"_id":"yMZTyVG5Qh2y5WqB"}

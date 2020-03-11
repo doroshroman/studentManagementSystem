@@ -32,22 +32,31 @@ function postData(API_URL, data, errorElement, form){
 
 studentForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    const formData = new FormData(regForm);
+    const formData = new FormData(studentForm);
     const name = formData.get('name');
     const surname = formData.get('surname');
     const patronymic = formData.get('patronymic');
     const email = formData.get('email');
     const password = formData.get('password');
     const birthday = formData.get('birthday');
-
-   const user = {
-        name,
-        surname,
-        patronymic,
-        email,
-        password
-    };
-
-    //postData(REG_API_URL, user, regError, regForm);
+    const gender = formData.get('gender');
+    const group = formData.get('group');
+    const studentCode = formData.get('stud-code');
+    const passCode = formData.get('pass-code');
+    
+    const student = {
+            name,
+            surname,
+            patronymic,
+            email,
+            password,
+            birthday,
+            gender,
+            group,
+            studentCode,
+            passCode
+        };
+    
+    postData(STUDENT_API_URL, student, error, studentForm);
 
 });

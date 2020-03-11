@@ -5,8 +5,10 @@ const userManager = require('./lib/controller/user-manager');
 const User = require('./lib/model/user');
 const Permission = require('./lib/model/permission');
 const path = require('path');
-const Datastore = require('nedb'), 
-    db = new Datastore({ filename: 'users.db', autoload: true });
+const Datastore = require('nedb');
+userDb = new Datastore({ filename: 'users.db', autoload: true });
+studentDb = new Datastore({ filename: 'students.db', autoload: true });
+ 
 
 const manager = new userManager(); 
 
@@ -34,13 +36,13 @@ app.post('/reg', (req, res) =>{
         const user = new User(name, surname, patronymic, email, password);
         
         //find if this user is in the db
-        db.findOne({ email: email}, (err, doc) =>{
+        userDb.findOne({ email: email}, (err, doc) =>{
             if(err){
                 res.end();
             }
             if(doc === null){
                 // insert into db
-                db.insert(user, (err, newDoc) =>{
+                userDb.insert(user, (err, newDoc) =>{
                     hash = bindUserAndGetHash(newDoc);
                     res.json({
                         session_id: hash
@@ -67,15 +69,15 @@ app.post('/sign', (req, res) =>{
     const password = req.body.password;
     if(isValidAuthUser(email, password)){
 
-        db.findOne({ email: email}, (err, doc) =>{
+        userDb.findOne({ email: email}, (err, doc) =>{
             if(err){
                 res.end();
             }
             if(doc !== null && doc.password.toLowerCase() === password){
                 hash = bindUserAndGetHash(doc);
-               res.json({
-                   session_id: hash
-               });
+                res.json({
+                    session_id: hash
+                });
             }else{
                 res.status(422);
                 res.json({
@@ -106,7 +108,9 @@ app.get('/add-student', (req, res) =>{
                 }
             });
             if(adminInd !== -1){
-                res.sendFile(path.join(__dirname + '/html/add-student.html'));
+                // Serve this folder for admin
+                app.use(express.static(__dirname + '/static'));
+                res.sendFile(path.join(__dirname + '/static/add-student.html'));
                 permission = true;
             }
             
@@ -118,8 +122,44 @@ app.get('/add-student', (req, res) =>{
         res.send("You don\'t have enought rights.");
     }
 });
+app.post('/add-student', (req, res)=>{
+    const student = req.body;
+    if(isValidStudent(student)){
+        const email = student.email;
+        studentDb.findOne({ email: email}, (err, doc) =>{
+            if(err){
+                res.end();
+            }
+            if(doc === null){
+                // insert into db
+                studentDb.insert(student, (err, newDoc) =>{
+                    res.json({newDoc});
+                });
+            }else{
+                res.status(422);
+                res.json({
+                    message: 'This student is busy.'
+                });
+            }
+        });
+
+    }else{
+        res.status(422);
+        res.json({
+            message: 'All fields are required!'
+        });
+    }
+});
 
 // Validation part
+function isValidStudent(student){
+    return isValidUser(student) &&
+    student.birthday && student.birthday.toString().trim() !== '' &&
+    student.gender && student.gender.toString().trim() !== '' &&
+    student.group && student.group.toString().trim() !== '' &&
+    student.studentCode && student.studentCode.toString().trim() !== '' &&
+    student.passCode && student.passCode.toString().trim() !== '';
+}
 function isValidAuthUser(email, password){
     return email && email.toString().trim() !== '' &&
     password && password.toString().trim() !== ''

@@ -22,7 +22,13 @@ app.use(express.json());
 app.use(cors());
 
 app.get('/all', (req, res) => {
-    res.json({'test': 10});
+    studentDb.find({}, (err, data) =>{
+        if(err){
+            res.end();
+            return;
+        }
+        res.json(data);
+    });
 });
 
 app.post('/reg', (req, res) =>{

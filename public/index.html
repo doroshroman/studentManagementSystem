@@ -11,6 +11,26 @@
         <a id="add" href="">Add Student Page</a>
 
         <script>
+            getAllStudents();
+            async function getAllStudents(){
+                const response = await fetch('/all');
+                const data = await response.json();
+                console.log(data);
+
+                for(student of data){
+                    const root = document.createElement('p');
+                    const name = document.createElement('div');
+                    const surname = document.createElement('div');
+                    const group = document.createElement('div');
+
+                    name.textContent = `Name: ${student.name}`;
+                    surname.textContent = `Surname: ${student.surname}`;
+                    group.textContent = `Group: ${student.group}`;
+
+                    root.append(name, surname, group);
+                    document.body.append(root);
+                }
+            }
             const addStudent = document.getElementById('add');
             addStudent.addEventListener('click' , async (event)=>{
                 //event.preventDefault();
